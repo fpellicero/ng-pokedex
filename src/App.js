@@ -1,19 +1,45 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Pokemons from './Pokemons';
+import {Row, Col} from 'react-bootstrap';
+import PokemonCard from './PokemonCard';
 import './App.css';
 
+
+
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedPokemon: ''
+    }
+  }
+  
+  selectPokemon(selectedPokemon) {
+    this.setState({selectedPokemon});
+  }
+
   render() {
+    const {selectedPokemon} = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Row>
+        <Col xs={4}>
+          <ul>
+            {
+              Pokemons.map((pokemon) => (
+                <li>
+                  <a href="#" onClick={() => this.selectPokemon(pokemon)}>
+                    {pokemon}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </Col>
+        <Col xs={8}>
+          <PokemonCard selectedPokemon={selectedPokemon}/>
+        </Col>
+      </Row>
     );
   }
 }
