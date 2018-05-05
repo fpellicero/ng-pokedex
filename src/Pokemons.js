@@ -1,6 +1,6 @@
 export default [
     'Bulbasaur',
-    'Chikorita',
+    'Chikoritas',
     'Treecko',
     'Turtwig',
     'Victini',
