@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import Pokemons from './Pokemons';
 import {Row, Col} from 'react-bootstrap';
-import PokemonCard from './PokemonCard';
+import PokemonCardView from './PokemonCard/PokemonCardView';
 import './App.css';
 
 
@@ -11,16 +11,39 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      selectedPokemon: ''
+      pokemonData: ''
     }
   }
   
   selectPokemon(selectedPokemon) {
-    this.setState({selectedPokemon});
+    const URL = "https://pokeapi.co/api/v2/pokemon/" + selectedPokemon.toLowerCase() + '/';
+
+    fetch(URL)
+      .then(
+          (response) => {
+              if(response.status != 200) {
+                  throw new Error('Not Found');
+              }
+
+              return response.json();
+          },                
+          // ITS THE SAME
+          // function(response) {
+          //     return response.json();
+          // }
+      )
+      .then(
+          (response) => {
+              this.setState({pokemonData: response});
+          },
+          (error) => {
+              console.log(error);
+          }
+      );
   }
 
   render() {
-    const {selectedPokemon} = this.state;
+    const {pokemonData} = this.state;
     return (
       <Row>
         <Col xs={4}>
@@ -37,7 +60,7 @@ class App extends Component {
           </ul>
         </Col>
         <Col xs={8}>
-          <PokemonCard selectedPokemon={selectedPokemon}/>
+          {pokemonData && <PokemonCardView pokemonData={pokemonData}/>}
         </Col>
       </Row>
     );
